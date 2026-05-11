@@ -66,11 +66,11 @@ class UserSettings(Base):  # type: ignore
     )  # False = not migrated, True = migrated
 
     def to_settings(self):
-        from openhands.sdk.settings import AgentSettings, ConversationSettings
-        from openhands.storage.data_models.settings import Settings
+        from openhands.sdk.settings import ConversationSettings
+        from openhands.storage.data_models.settings import Settings, validate_agent_settings
 
         return Settings(
-            agent_settings=AgentSettings.model_validate(self.agent_settings or {}),
+            agent_settings=validate_agent_settings(self.agent_settings or {}),
             conversation_settings=ConversationSettings.model_validate(
                 self.conversation_settings or {}
             ),

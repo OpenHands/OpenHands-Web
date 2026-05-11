@@ -10,7 +10,6 @@ from openhands.integrations.provider import ProviderToken, ProviderType
 from openhands.integrations.service_types import UserGitInfo
 from openhands.sdk.llm import LLM
 from openhands.sdk.settings import (
-    AgentSettings,
     ConversationSettings,
     VerificationSettings,
 )
@@ -22,6 +21,7 @@ from openhands.storage.memory import InMemoryFileStore
 from openhands.storage.secrets.secrets_store import SecretsStore
 from openhands.storage.settings.file_settings_store import FileSettingsStore
 from openhands.storage.settings.settings_store import SettingsStore
+from openhands.storage.data_models.settings import OpenHandsAgentSettings
 
 _EXPOSE = {'expose_secrets': True}
 
@@ -137,7 +137,7 @@ async def test_settings_api_endpoints(test_client):
     settings = Settings(
         language='en',
         remote_runtime_resource_factor=2,
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             agent='test-agent',
             llm=LLM(
                 model='test-model',
@@ -215,7 +215,7 @@ async def test_saving_settings_with_frozen_secrets_store(test_client):
     payload = _dump(
         Settings(
             language='en',
-            agent_settings=AgentSettings(llm=LLM(model='gpt-4')),
+            agent_settings=OpenHandsAgentSettings(llm=LLM(model='gpt-4')),
         )
     )
     # Inject an extra key the API should ignore gracefully
@@ -232,7 +232,7 @@ async def test_search_api_key_explicit_clear(test_client):
         json=_dump(
             Settings(
                 search_api_key='initial-secret-key',
-                agent_settings=AgentSettings(llm=LLM(model='gpt-4')),
+                agent_settings=OpenHandsAgentSettings(llm=LLM(model='gpt-4')),
             )
         ),
     )
@@ -247,7 +247,7 @@ async def test_search_api_key_explicit_clear(test_client):
         json=_dump(
             Settings(
                 search_api_key='',
-                agent_settings=AgentSettings(llm=LLM(model='claude-3-opus')),
+                agent_settings=OpenHandsAgentSettings(llm=LLM(model='claude-3-opus')),
             )
         ),
     )
@@ -267,7 +267,7 @@ async def test_disabled_skills_persistence(test_client):
         json=_dump(
             Settings(
                 disabled_skills=['skill_a', 'skill_b'],
-                agent_settings=AgentSettings(llm=LLM(model='test-model')),
+                agent_settings=OpenHandsAgentSettings(llm=LLM(model='test-model')),
             )
         ),
     )

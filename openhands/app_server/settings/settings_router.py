@@ -15,7 +15,8 @@ from openhands.integrations.provider import (
     PROVIDER_TOKEN_TYPE,
     ProviderType,
 )
-from openhands.sdk.settings import AgentSettings, ConversationSettings
+from openhands.sdk.settings import ConversationSettings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings
 from openhands.server.routes.secrets import invalidate_legacy_secrets_store
 from openhands.server.settings import (
     GETSettingsModel,
@@ -240,7 +241,7 @@ async def store_settings(
 @router.get('/agent-schema')
 async def load_settings_schema() -> dict[str, Any]:
     """Load the schema for settings"""
-    return AgentSettings.export_schema().model_dump(mode='json')
+    return OpenHandsAgentSettings.export_schema().model_dump(mode='json')
 
 
 @router.get('/conversation-schema')

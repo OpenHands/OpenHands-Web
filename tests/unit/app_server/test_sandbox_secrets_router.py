@@ -36,7 +36,7 @@ from openhands.integrations.provider import ProviderHandler, ProviderToken
 from openhands.integrations.service_types import ProviderType
 from openhands.sdk.llm import LLM
 from openhands.sdk.secret import StaticSecret
-from openhands.sdk.settings import AgentSettings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings
 
 SANDBOX_ID = 'sb-test-123'
 USER_ID = 'test-user-id'
@@ -158,7 +158,7 @@ class TestGetCurrentUserExposeSecrets:
         """With valid session key, expose_secrets=true returns unmasked llm_api_key."""
         user_info = UserInfo(
             id=USER_ID,
-            agent_settings=AgentSettings(
+            agent_settings=OpenHandsAgentSettings(
                 llm=LLM(
                     model='anthropic/claude-sonnet-4-20250514',
                     api_key=SecretStr('sk-test-key-123'),
@@ -238,7 +238,7 @@ class TestGetCurrentUserExposeSecrets:
         """Without expose_secrets, llm_api_key is masked (no session key needed)."""
         user_info = UserInfo(
             id=USER_ID,
-            agent_settings=AgentSettings(
+            agent_settings=OpenHandsAgentSettings(
                 llm=LLM(model='gpt-4o', api_key=SecretStr('sk-test-key-123')),
             ),
         )
@@ -454,7 +454,7 @@ class TestExposeSecretsIntegration:
         mock_user_ctx.get_user_info = AsyncMock(
             return_value=UserInfo(
                 id=USER_ID,
-                agent_settings=AgentSettings(
+                agent_settings=OpenHandsAgentSettings(
                     llm=LLM(model='gpt-4o', api_key=SecretStr('sk-secret-123')),
                 ),
             )
@@ -475,7 +475,7 @@ class TestExposeSecretsIntegration:
         mock_user_ctx.get_user_info = AsyncMock(
             return_value=UserInfo(
                 id=USER_ID,
-                agent_settings=AgentSettings(
+                agent_settings=OpenHandsAgentSettings(
                     llm=LLM(model='gpt-4o', api_key=SecretStr('sk-secret-123')),
                 ),
             )
@@ -507,7 +507,7 @@ class TestExposeSecretsIntegration:
         mock_user_ctx.get_user_info = AsyncMock(
             return_value=UserInfo(
                 id='user-A',
-                agent_settings=AgentSettings(
+                agent_settings=OpenHandsAgentSettings(
                     llm=LLM(model='gpt-4o', api_key=SecretStr('sk-secret-123')),
                 ),
             )
@@ -543,7 +543,7 @@ class TestExposeSecretsIntegration:
         mock_user_ctx.get_user_info = AsyncMock(
             return_value=UserInfo(
                 id=USER_ID,
-                agent_settings=AgentSettings(
+                agent_settings=OpenHandsAgentSettings(
                     llm=LLM(
                         model='anthropic/claude-sonnet-4-20250514',
                         api_key=SecretStr('sk-real-secret'),
@@ -585,7 +585,7 @@ class TestExposeSecretsIntegration:
         mock_user_ctx.get_user_info = AsyncMock(
             return_value=UserInfo(
                 id=USER_ID,
-                agent_settings=AgentSettings(
+                agent_settings=OpenHandsAgentSettings(
                     llm=LLM(
                         model='gpt-4o',
                         api_key=SecretStr('sk-should-be-masked'),

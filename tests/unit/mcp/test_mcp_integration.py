@@ -6,7 +6,7 @@ import pytest
 
 from openhands.core.config.mcp_config import MCPConfig, RemoteMCPServer
 from openhands.sdk.llm import LLM
-from openhands.sdk.settings import AgentSettings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings
 from openhands.server.user_auth.default_user_auth import DefaultUserAuth
 from openhands.storage.data_models.settings import Settings
 from openhands.storage.settings.file_settings_store import FileSettingsStore
@@ -20,7 +20,7 @@ def _sdk_mcp_config(settings: Settings) -> MCPConfig | None:
 async def test_user_auth_mcp_merging_integration():
     """Test that MCP merging works in the user auth flow."""
     config_settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='config-model'),
             mcp_config=MCPConfig(
                 mcpServers={
@@ -33,7 +33,7 @@ async def test_user_auth_mcp_merging_integration():
     )
 
     stored_settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='anthropic/claude-sonnet-4-5-20250929'),
             mcp_config=MCPConfig(
                 mcpServers={
@@ -72,7 +72,7 @@ async def test_user_auth_mcp_merging_integration():
 async def test_user_auth_caching_behavior():
     """Test that user auth caches the merged settings correctly."""
     config_settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='config-model'),
             mcp_config=MCPConfig(
                 mcpServers={
@@ -85,7 +85,7 @@ async def test_user_auth_caching_behavior():
     )
 
     stored_settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='anthropic/claude-sonnet-4-5-20250929'),
             mcp_config=MCPConfig(
                 mcpServers={

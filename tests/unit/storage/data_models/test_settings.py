@@ -11,11 +11,11 @@ from openhands.core.config.security_config import SecurityConfig
 from openhands.sdk.llm import LLM
 from openhands.sdk.settings import (
     AGENT_SETTINGS_SCHEMA_VERSION,
-    AgentSettings,
     ConversationSettings,
 )
 from openhands.sdk.settings.model import CondenserSettings, VerificationSettings
 from openhands.storage.data_models.settings import Settings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings
 
 
 def test_settings_from_config():
@@ -82,7 +82,7 @@ def test_settings_from_config_no_api_key():
 def test_settings_handles_sensitive_data():
     settings = Settings(
         language='en',
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             agent='test-agent',
             llm=LLM(
                 model='test-model',
@@ -106,7 +106,7 @@ def test_settings_handles_sensitive_data():
 def test_settings_update_deep_merges_agent_settings():
     """Updating agent_settings with a partial dict must not overwrite sibling sub-fields."""
     settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='existing-model', api_key=SecretStr('existing-key')),
             condenser=CondenserSettings(enabled=True, max_size=200),
         ),
@@ -122,7 +122,7 @@ def test_settings_update_deep_merges_agent_settings():
 
 def test_settings_preserve_agent_settings():
     settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(
                 model='test-model',
                 api_key=SecretStr('test-key'),
@@ -150,7 +150,7 @@ def test_settings_preserve_agent_settings():
 
 def test_settings_to_agent_settings_uses_agent_vals():
     settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(
                 model='sdk-model',
                 base_url='https://sdk.example.com',
@@ -176,7 +176,7 @@ def test_settings_to_agent_settings_uses_agent_vals():
 
 def test_settings_agent_settings_keeps_sdk_mcp_shape_canonical():
     settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='sdk-model'),
             mcp_config=MCPConfig(
                 mcpServers={
@@ -201,7 +201,7 @@ def test_settings_agent_settings_keeps_sdk_mcp_shape_canonical():
 
 
 def test_settings_update_mcp_config():
-    settings = Settings(agent_settings=AgentSettings(llm=LLM(model='sdk-model')))
+    settings = Settings(agent_settings=OpenHandsAgentSettings(llm=LLM(model='sdk-model')))
 
     settings.update(
         {
@@ -227,7 +227,7 @@ def test_settings_update_mcp_config():
 
 def test_settings_update_replaces_existing_mcp_servers():
     settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='sdk-model'),
             mcp_config=MCPConfig(
                 mcpServers={
@@ -263,7 +263,7 @@ def test_settings_update_replaces_existing_mcp_servers():
 
 def test_settings_update_can_clear_mcp_config():
     settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='sdk-model'),
             mcp_config=MCPConfig(
                 mcpServers={
