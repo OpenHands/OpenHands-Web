@@ -12,8 +12,7 @@ from storage.org_store import OrgStore
 from storage.role import Role
 from storage.user import User
 
-from openhands.storage.data_models.settings import OpenHandsAgentSettings
-from openhands.storage.data_models.settings import Settings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings, Settings
 
 
 @pytest.fixture

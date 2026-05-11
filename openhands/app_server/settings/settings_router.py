@@ -16,7 +16,6 @@ from openhands.integrations.provider import (
     ProviderType,
 )
 from openhands.sdk.settings import ConversationSettings
-from openhands.storage.data_models.settings import OpenHandsAgentSettings
 from openhands.server.routes.secrets import invalidate_legacy_secrets_store
 from openhands.server.settings import (
     GETSettingsModel,
@@ -28,7 +27,7 @@ from openhands.server.user_auth import (
     get_user_settings,
     get_user_settings_store,
 )
-from openhands.storage.data_models.settings import Settings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings, Settings
 from openhands.storage.secrets.secrets_store import SecretsStore
 from openhands.storage.settings.settings_store import SettingsStore
 from openhands.utils.llm import get_provider_api_base, is_openhands_model

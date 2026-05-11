@@ -21,9 +21,8 @@ from openhands.server.routes.secrets import (
 from openhands.server.settings import POSTProviderModel
 from openhands.storage import get_file_store
 from openhands.storage.data_models.secrets import Secrets
-from openhands.storage.data_models.settings import Settings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings, Settings
 from openhands.storage.secrets.file_secrets_store import FileSecretsStore
-from openhands.storage.data_models.settings import OpenHandsAgentSettings
 
 _EXPOSE = {'expose_secrets': True}
 
@@ -495,7 +494,9 @@ def test_get_agent_settings_display_clears_proxy_base_url():
     """get_agent_settings_display should clear the LiteLLM proxy base_url
     for openhands models so the frontend sees null (enabling basic mode)."""
     s = Settings(
-        agent_settings=OpenHandsAgentSettings(llm=LLM(model='openhands/claude-opus-4-5'))
+        agent_settings=OpenHandsAgentSettings(
+            llm=LLM(model='openhands/claude-opus-4-5')
+        )
     )
 
     # SDK sets the proxy URL internally

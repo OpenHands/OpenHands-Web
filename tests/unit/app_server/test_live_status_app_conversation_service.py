@@ -40,11 +40,14 @@ from openhands.sdk import Agent, Event
 from openhands.sdk.llm import LLM
 from openhands.sdk.secret import LookupSecret, StaticSecret
 from openhands.sdk.settings import ConversationSettings
-from openhands.storage.data_models.settings import OpenHandsAgentSettings
 from openhands.sdk.workspace.remote.async_remote_workspace import AsyncRemoteWorkspace
 from openhands.server.types import AppMode
 from openhands.storage.data_models.conversation_metadata import ConversationTrigger
-from openhands.storage.data_models.settings import SandboxGroupingStrategy, Settings
+from openhands.storage.data_models.settings import (
+    OpenHandsAgentSettings,
+    SandboxGroupingStrategy,
+    Settings,
+)
 
 
 def _build_test_user_agent_settings(user: SimpleNamespace) -> OpenHandsAgentSettings:

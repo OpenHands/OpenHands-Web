@@ -14,8 +14,7 @@ from openhands.sdk.settings import (
     ConversationSettings,
 )
 from openhands.sdk.settings.model import CondenserSettings, VerificationSettings
-from openhands.storage.data_models.settings import Settings
-from openhands.storage.data_models.settings import OpenHandsAgentSettings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings, Settings
 
 
 def test_settings_from_config():
@@ -201,7 +200,9 @@ def test_settings_agent_settings_keeps_sdk_mcp_shape_canonical():
 
 
 def test_settings_update_mcp_config():
-    settings = Settings(agent_settings=OpenHandsAgentSettings(llm=LLM(model='sdk-model')))
+    settings = Settings(
+        agent_settings=OpenHandsAgentSettings(llm=LLM(model='sdk-model'))
+    )
 
     settings.update(
         {

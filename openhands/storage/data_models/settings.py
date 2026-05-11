@@ -16,6 +16,7 @@ from pydantic import (
 
 from openhands.core.config.llm_config import LLMConfig
 from openhands.core.config.utils import load_openhands_config
+
 try:
     from openhands.sdk.settings import (
         ACPAgentSettings,
@@ -39,6 +40,8 @@ except ImportError:  # compatibility with SDK < 1.19
         if isinstance(data, OpenHandsAgentSettings):
             return data
         return OpenHandsAgentSettings.model_validate(data or {})
+
+
 from openhands.storage.data_models.secrets import Secrets
 from openhands.utils.jsonpatch_compat import deep_merge
 
@@ -197,7 +200,9 @@ class Settings(BaseModel):
 
                 # Use object.__setattr__ to avoid validate_assignment
                 # side-effects on other fields.
-                object.__setattr__(self, 'agent_settings', validate_agent_settings(merged))
+                object.__setattr__(
+                    self, 'agent_settings', validate_agent_settings(merged)
+                )
 
         if 'conversation_settings' in payload:
             conv_update = payload['conversation_settings']

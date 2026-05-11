@@ -11,8 +11,7 @@ from openhands.core.config.mcp_config import (
     StdioMCPServer,
 )
 from openhands.sdk.llm import LLM
-from openhands.storage.data_models.settings import OpenHandsAgentSettings
-from openhands.storage.data_models.settings import Settings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings, Settings
 
 
 @pytest.fixture(autouse=True)
@@ -49,7 +48,9 @@ async def test_mcp_settings_merge_config_only():
         )
     )
 
-    frontend_settings = Settings(agent_settings=OpenHandsAgentSettings(llm=LLM(model='gpt-4')))
+    frontend_settings = Settings(
+        agent_settings=OpenHandsAgentSettings(llm=LLM(model='gpt-4'))
+    )
 
     with patch(
         'openhands.storage.data_models.settings.Settings.from_config',
@@ -172,7 +173,9 @@ async def test_mcp_settings_merge_neither_present():
         agent_settings=OpenHandsAgentSettings(llm=LLM(model='claude-3'))
     )
 
-    frontend_settings = Settings(agent_settings=OpenHandsAgentSettings(llm=LLM(model='gpt-4')))
+    frontend_settings = Settings(
+        agent_settings=OpenHandsAgentSettings(llm=LLM(model='gpt-4'))
+    )
 
     with patch(
         'openhands.storage.data_models.settings.Settings.from_config',

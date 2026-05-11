@@ -26,8 +26,7 @@ from storage.user_store import UserStore
 
 from openhands.core.logger import openhands_logger as logger
 from openhands.sdk.settings import ConversationSettings
-from openhands.storage.data_models.settings import default_agent_settings
-from openhands.storage.data_models.settings import Settings
+from openhands.storage.data_models.settings import Settings, default_agent_settings
 
 
 class OrgService:

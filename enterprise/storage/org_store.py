@@ -51,8 +51,8 @@ class OrgStore:
     @staticmethod
     def get_agent_settings_from_org(org: Org) -> OpenHandsAgentSettings:
         loaded = validate_agent_settings(dict(org.agent_settings))
-        payload = loaded.model_dump(mode="json", context={"expose_secrets": True})
-        payload["agent_kind"] = "openhands"
+        payload = loaded.model_dump(mode='json', context={'expose_secrets': True})
+        payload['agent_kind'] = 'openhands'
         return OpenHandsAgentSettings.model_validate(payload)
 
     @staticmethod

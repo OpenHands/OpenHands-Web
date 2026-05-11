@@ -67,7 +67,10 @@ class UserSettings(Base):  # type: ignore
 
     def to_settings(self):
         from openhands.sdk.settings import ConversationSettings
-        from openhands.storage.data_models.settings import Settings, validate_agent_settings
+        from openhands.storage.data_models.settings import (
+            Settings,
+            validate_agent_settings,
+        )
 
         return Settings(
             agent_settings=validate_agent_settings(self.agent_settings or {}),
