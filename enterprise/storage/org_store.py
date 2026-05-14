@@ -51,11 +51,14 @@ class OrgStore:
     @staticmethod
     def get_agent_settings_from_org(org: Org) -> OpenHandsAgentSettings:
         loaded = validate_agent_settings(dict(org.agent_settings))
+        if not isinstance(loaded, OpenHandsAgentSettings):
+            raise ValueError(
+                'Organization agent settings must use the OpenHands agent'
+            )
+
         payload = loaded.model_dump(mode='json', context={'expose_secrets': True})
-        # Organization defaults are still stored as the built-in OpenHands agent
-        # shape. Normalize legacy ``llm`` payloads to the canonical discriminator
-        # before returning the concrete type expected by org-settings callers.
-        payload['agent_kind'] = 'openhands'
+        if payload.get('agent_kind') == 'llm':
+            payload['agent_kind'] = 'openhands'
         return OpenHandsAgentSettings.model_validate(payload)
 
     @staticmethod

@@ -24,6 +24,7 @@ try:
         ConversationSettings,
         OpenHandsAgentSettings,
         default_agent_settings,
+        export_agent_settings_schema,
         validate_agent_settings,
     )
 except ImportError:  # compatibility with SDK < 1.19
@@ -40,6 +41,9 @@ except ImportError:  # compatibility with SDK < 1.19
         if isinstance(data, OpenHandsAgentSettings):
             return data
         return OpenHandsAgentSettings.model_validate(data or {})
+
+    def export_agent_settings_schema() -> Any:
+        return OpenHandsAgentSettings.export_schema()
 
 
 from openhands.storage.data_models.secrets import Secrets
