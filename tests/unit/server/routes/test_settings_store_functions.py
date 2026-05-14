@@ -13,7 +13,6 @@ from openhands.integrations.service_types import ProviderType
 from openhands.sdk.llm import LLM
 from openhands.sdk.settings import (
     AGENT_SETTINGS_SCHEMA_VERSION,
-    AgentSettings,
     ConversationSettings,
 )
 from openhands.server.routes.secrets import (
@@ -22,7 +21,7 @@ from openhands.server.routes.secrets import (
 from openhands.server.settings import POSTProviderModel
 from openhands.storage import get_file_store
 from openhands.storage.data_models.secrets import Secrets
-from openhands.storage.data_models.settings import Settings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings, Settings
 from openhands.storage.secrets.file_secrets_store import FileSecretsStore
 
 _EXPOSE = {'expose_secrets': True}
@@ -41,8 +40,8 @@ _DEFAULT_LLM = LLM(model='test-model')
 
 
 def _make_settings(llm: LLM | None = None) -> Settings:
-    """Helper to create Settings with an AgentSettings object."""
-    return Settings(agent_settings=AgentSettings(llm=llm or _DEFAULT_LLM))
+    """Helper to create Settings with an OpenHandsAgentSettings object."""
+    return Settings(agent_settings=OpenHandsAgentSettings(llm=llm or _DEFAULT_LLM))
 
 
 def _secret(s: SecretStr | None) -> str | None:
@@ -229,7 +228,7 @@ def test_apply_payload_preserves_secrets_when_not_provided():
 
 def test_apply_payload_mcp_update_preserves_existing_llm_settings():
     existing_settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(
                 model='anthropic/claude-sonnet-4-5-20250929',
                 api_key=SecretStr('existing-api-key'),
@@ -359,7 +358,7 @@ def test_apply_payload_conversation_settings_stored_top_level():
 def test_agent_settings_construction():
     """Settings constructed with proper objects should be accessible."""
     s = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(
                 model='gpt-4',
                 api_key=SecretStr('my-key'),
@@ -381,7 +380,7 @@ def test_agent_settings_construction():
 
 def test_agent_settings_normalized_with_schema_version_and_extras():
     s = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='anthropic/claude-sonnet-4-5-20250929'),
         ),
         conversation_settings=ConversationSettings(
@@ -399,7 +398,7 @@ def test_agent_settings_normalized_with_schema_version_and_extras():
 
 def test_agent_settings_persistence_strips_secret_values():
     s = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(
                 model='anthropic/claude-sonnet-4-5-20250929',
                 api_key=SecretStr('super-secret'),
@@ -419,7 +418,7 @@ def test_agent_settings_persistence_strips_secret_values():
 
 def test_openhands_model_settings_remain_user_facing():
     s = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='openhands/claude-opus-4-5-20251101')
         )
     )
@@ -431,7 +430,7 @@ def test_openhands_model_settings_remain_user_facing():
 
 def test_litellm_proxy_model_settings_migrate_back_to_openhands_prefix():
     s = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='litellm_proxy/claude-opus-4-5-20251101')
         )
     )
@@ -444,7 +443,7 @@ def test_litellm_proxy_model_settings_migrate_back_to_openhands_prefix():
 # ──────────────────────────────────────────────────────────────────
 # Regression tests for openhands/ → litellm_proxy/ round-trip bug
 # ──────────────────────────────────────────────────────────────────
-# The SDK's AgentSettings.model_validate automatically transforms
+# The SDK's OpenHandsAgentSettings.model_validate automatically transforms
 # "openhands/X" → "litellm_proxy/X" with a proxy base_url.  The
 # settings router must convert it back for the frontend and handle
 # the internal model name in is_openhands_model-style checks.
@@ -478,7 +477,7 @@ def test_post_merge_llm_fixups_sets_proxy_url_for_openhands_model_with_null_base
     )
 
     settings = Settings(
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             llm=LLM(model='litellm_proxy/claude-opus-4-5', base_url=None)
         ),
     )
@@ -495,7 +494,9 @@ def test_get_agent_settings_display_clears_proxy_base_url():
     """get_agent_settings_display should clear the LiteLLM proxy base_url
     for openhands models so the frontend sees null (enabling basic mode)."""
     s = Settings(
-        agent_settings=AgentSettings(llm=LLM(model='openhands/claude-opus-4-5'))
+        agent_settings=OpenHandsAgentSettings(
+            llm=LLM(model='openhands/claude-opus-4-5')
+        )
     )
 
     # SDK sets the proxy URL internally

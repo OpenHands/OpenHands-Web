@@ -22,8 +22,12 @@ from storage.user import User
 from storage.user_settings import UserSettings
 
 from openhands.core.logger import openhands_logger as logger
-from openhands.sdk.settings import AgentSettings, ConversationSettings
-from openhands.storage.data_models.settings import Settings
+from openhands.sdk.settings import ConversationSettings
+from openhands.storage.data_models.settings import (
+    OpenHandsAgentSettings,
+    Settings,
+    validate_agent_settings,
+)
 from openhands.utils.jsonpatch_compat import deep_merge
 
 _ORG_SETTINGS_EXCLUDED_FIELDS = {
@@ -45,8 +49,15 @@ class OrgStore:
     """Store for managing organizations."""
 
     @staticmethod
-    def get_agent_settings_from_org(org: Org) -> AgentSettings:
-        return AgentSettings.model_validate(dict(org.agent_settings))
+    def get_agent_settings_from_org(org: Org) -> OpenHandsAgentSettings:
+        loaded = validate_agent_settings(dict(org.agent_settings))
+        if not isinstance(loaded, OpenHandsAgentSettings):
+            raise ValueError('Organization agent settings must use the OpenHands agent')
+
+        payload = loaded.model_dump(mode='json', context={'expose_secrets': True})
+        if payload.get('agent_kind') == 'llm':
+            payload['agent_kind'] = 'openhands'
+        return OpenHandsAgentSettings.model_validate(payload)
 
     @staticmethod
     def get_conversation_settings_from_org(org: Org) -> ConversationSettings:

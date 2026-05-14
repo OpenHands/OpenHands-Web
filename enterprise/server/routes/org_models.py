@@ -12,7 +12,12 @@ from storage.org import Org
 from storage.org_member import OrgMember
 from storage.role import Role
 
-from openhands.sdk.settings import AgentSettings, ConversationSettings
+from openhands.sdk.settings import ConversationSettings
+from openhands.storage.data_models.settings import (
+    AgentSettingsConfig,
+    default_agent_settings,
+    validate_agent_settings,
+)
 
 
 class OrgCreationError(Exception):
@@ -152,7 +157,7 @@ class OrgResponse(BaseModel):
     sandbox_base_container_image: str | None = None
     sandbox_runtime_container_image: str | None = None
     org_version: int = 0
-    agent_settings: AgentSettings = Field(default_factory=AgentSettings)
+    agent_settings: AgentSettingsConfig = Field(default_factory=default_agent_settings)
     conversation_settings: ConversationSettings = Field(
         default_factory=ConversationSettings
     )
@@ -183,7 +188,7 @@ class OrgResponse(BaseModel):
             sandbox_base_container_image=org.sandbox_base_container_image,
             sandbox_runtime_container_image=org.sandbox_runtime_container_image,
             org_version=org.org_version if org.org_version is not None else 0,
-            agent_settings=AgentSettings.model_validate(
+            agent_settings=validate_agent_settings(
                 dict(org.agent_settings) if org.agent_settings else {}
             ),
             conversation_settings=ConversationSettings.model_validate(
@@ -234,7 +239,7 @@ class OrgUpdate(BaseModel):
 class OrgLLMSettingsResponse(BaseModel):
     """Response model for organization default LLM settings."""
 
-    agent_settings: AgentSettings = Field(default_factory=AgentSettings)
+    agent_settings: AgentSettingsConfig = Field(default_factory=default_agent_settings)
     conversation_settings: ConversationSettings = Field(
         default_factory=ConversationSettings
     )
@@ -257,7 +262,7 @@ class OrgLLMSettingsResponse(BaseModel):
     def from_org(cls, org: Org) -> 'OrgLLMSettingsResponse':
         """Create response from Org entity."""
         return cls(
-            agent_settings=AgentSettings.model_validate(
+            agent_settings=validate_agent_settings(
                 dict(org.agent_settings) if org.agent_settings else {}
             ),
             conversation_settings=ConversationSettings.model_validate(

@@ -6,8 +6,8 @@ from pydantic import SecretStr
 
 from openhands.core.config.openhands_config import OpenHandsConfig
 from openhands.sdk.llm import LLM
-from openhands.sdk.settings import AgentSettings, ConversationSettings
-from openhands.storage.data_models.settings import Settings
+from openhands.sdk.settings import ConversationSettings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings, Settings
 from openhands.storage.files import FileStore
 from openhands.storage.settings.file_settings_store import FileSettingsStore
 
@@ -43,7 +43,7 @@ async def test_store_and_load_data(file_settings_store):
     # Test data
     init_data = Settings(
         language='python',
-        agent_settings=AgentSettings(
+        agent_settings=OpenHandsAgentSettings(
             agent='test-agent',
             llm=LLM(
                 model='test-model',

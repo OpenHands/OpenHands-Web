@@ -11,8 +11,7 @@ from openhands.core.config.mcp_config import (
     StdioMCPServer,
 )
 from openhands.sdk.llm import LLM
-from openhands.sdk.settings import AgentSettings
-from openhands.storage.data_models.settings import Settings
+from openhands.storage.data_models.settings import OpenHandsAgentSettings, Settings
 
 
 @pytest.fixture(autouse=True)
@@ -31,7 +30,7 @@ _DEFAULT_LLM = LLM(model='test-model')
 
 def _settings_with_mcp(mcp_config, llm=None):
     """Helper: create Settings with mcp_config set via agent_settings."""
-    s = Settings(agent_settings=AgentSettings(llm=llm or _DEFAULT_LLM))
+    s = Settings(agent_settings=OpenHandsAgentSettings(llm=llm or _DEFAULT_LLM))
     s.agent_settings.mcp_config = mcp_config
     return s
 
@@ -49,7 +48,9 @@ async def test_mcp_settings_merge_config_only():
         )
     )
 
-    frontend_settings = Settings(agent_settings=AgentSettings(llm=LLM(model='gpt-4')))
+    frontend_settings = Settings(
+        agent_settings=OpenHandsAgentSettings(llm=LLM(model='gpt-4'))
+    )
 
     with patch(
         'openhands.storage.data_models.settings.Settings.from_config',
@@ -68,7 +69,7 @@ async def test_mcp_settings_merge_config_only():
 async def test_mcp_settings_merge_frontend_only():
     """Test merging when only frontend has MCP settings."""
     mock_config_settings = Settings(
-        agent_settings=AgentSettings(llm=LLM(model='claude-3'))
+        agent_settings=OpenHandsAgentSettings(llm=LLM(model='claude-3'))
     )
 
     frontend_settings = _settings_with_mcp(
@@ -169,10 +170,12 @@ async def test_mcp_settings_merge_no_config():
 async def test_mcp_settings_merge_neither_present():
     """Test merging when neither config.toml nor frontend have MCP settings."""
     mock_config_settings = Settings(
-        agent_settings=AgentSettings(llm=LLM(model='claude-3'))
+        agent_settings=OpenHandsAgentSettings(llm=LLM(model='claude-3'))
     )
 
-    frontend_settings = Settings(agent_settings=AgentSettings(llm=LLM(model='gpt-4')))
+    frontend_settings = Settings(
+        agent_settings=OpenHandsAgentSettings(llm=LLM(model='gpt-4'))
+    )
 
     with patch(
         'openhands.storage.data_models.settings.Settings.from_config',
