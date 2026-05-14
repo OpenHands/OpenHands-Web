@@ -52,9 +52,7 @@ class OrgStore:
     def get_agent_settings_from_org(org: Org) -> OpenHandsAgentSettings:
         loaded = validate_agent_settings(dict(org.agent_settings))
         if not isinstance(loaded, OpenHandsAgentSettings):
-            raise ValueError(
-                'Organization agent settings must use the OpenHands agent'
-            )
+            raise ValueError('Organization agent settings must use the OpenHands agent')
 
         payload = loaded.model_dump(mode='json', context={'expose_secrets': True})
         if payload.get('agent_kind') == 'llm':
