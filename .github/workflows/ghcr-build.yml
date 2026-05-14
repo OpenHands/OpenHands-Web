@@ -85,13 +85,9 @@ jobs:
       - name: Lowercase Repository Owner
         run: |
           echo REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-      - name: Build app image for pull request
-        if: github.event_name == 'pull_request'
-        run: ./containers/build.sh -i openhands -o ${{ env.REPO_OWNER }} --arch ${{ matrix.arch }}
-
       - name: Build and push app image
         id: build
-        if: github.event_name != 'pull_request'
+        if: "!github.event.pull_request.head.repo.fork"
         run: |
           ./containers/build.sh -i openhands -o ${{ env.REPO_OWNER }} --push --arch ${{ matrix.arch }}
 
@@ -107,7 +103,7 @@ jobs:
     name: Merge App Multi-Arch Manifest
     runs-on: ubuntu-22.04
     needs: [define-matrix, ghcr_build_app]
-    if: github.event_name != 'pull_request'
+    if: github.event.pull_request.head.repo.fork != true
     permissions:
       packages: write
     steps:
@@ -189,6 +185,7 @@ jobs:
           echo SHORT_SHA=$(git rev-parse --short "$RELEVANT_SHA") >> $GITHUB_ENV
       - name: Determine docker build params
         id: params
+        if: github.event.pull_request.head.repo.fork != true
         shell: bash
         run: |
           ./containers/build.sh -i runtime -o ${{ env.REPO_OWNER }} -t ${{ matrix.base_image.tag }} --arch ${{ matrix.arch }} --dry
@@ -203,20 +200,8 @@ jobs:
           echo "base_tags_${{ matrix.base_image.tag }}<<EOF" >> "$GITHUB_OUTPUT"
           echo "$BASE_TAGS" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
-      - name: Build runtime image ${{ matrix.base_image.image }} for pull request
-        if: github.event_name == 'pull_request'
-        uses: docker/build-push-action@v6
-        with:
-          push: false
-          tags: ${{ env.DOCKER_TAGS }}
-          platforms: ${{ env.DOCKER_PLATFORM }}
-          cache-from: type=registry,ref=ghcr.io/${{ env.REPO_OWNER }}/runtime:buildcache-${{ matrix.base_image.tag }}-${{ matrix.arch }}
-          build-args: ${{ env.DOCKER_BUILD_ARGS }}
-          context: containers/runtime
-          provenance: false
-
       - name: Build and push runtime image ${{ matrix.base_image.image }}
-        if: github.event_name != 'pull_request'
+        if: github.event.pull_request.head.repo.fork != true
         uses: docker/build-push-action@v6
         with:
           push: true
@@ -246,7 +231,7 @@ jobs:
     name: Merge Runtime Multi-Arch Manifest
     runs-on: ubuntu-22.04
     needs: [define-matrix, ghcr_build_runtime]
-    if: github.event_name != 'pull_request'
+    if: github.event.pull_request.head.repo.fork != true
     permissions:
       packages: write
     steps:
@@ -289,7 +274,7 @@ jobs:
       packages: write
     needs: [define-matrix, ghcr_build_app_merge]
     # Do not build enterprise in forks
-    if: github.event_name != 'pull_request'
+    if: github.event.pull_request.head.repo.fork != true
     outputs:
       # Tags without arch suffix, for the merge job
       base_tags: ${{ steps.meta_base.outputs.tags }}
@@ -387,7 +372,7 @@ jobs:
     permissions:
       packages: write
     needs: [define-matrix, ghcr_build_enterprise]
-    if: github.event_name != 'pull_request'
+    if: github.event.pull_request.head.repo.fork != true
     steps:
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -428,7 +413,7 @@ jobs:
 
   update_pr_description:
     name: Update PR Description
-    if: false
+    if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]'
     needs: [ghcr_build_runtime_merge]
     runs-on: ubuntu-22.04
     steps:
