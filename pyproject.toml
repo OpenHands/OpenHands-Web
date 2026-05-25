@@ -18,7 +18,6 @@ classifiers = [
 ]
 # Version is managed dynamically by poetry-dynamic-versioning
 dynamic = [ "version" ]
-
 # Main dependencies (mirrors [tool.poetry.dependencies] for UV compatibility)
 dependencies = [
   "aiohttp==3.13.4",
@@ -55,7 +54,7 @@ dependencies = [
   "mcp>=1.25",
   "memory-profiler>=0.61",
   "numpy",
-  "openai==2.33.0",
+  "openai==2.33",
   "openhands-aci==0.3.3",
   "openhands-agent-server==1.17",
   "openhands-sdk==1.17",
@@ -105,8 +104,7 @@ dependencies = [
   "whatthepatch>=1.0.6",
   "zope-interface==7.2",
 ]
-
-optional-dependencies.third_party_runtimes = [
+optional-dependencies.third-party-runtimes = [
   "daytona==0.24.2",
   "e2b-code-interpreter>=2",
   "modal>=0.66.26,<1.2",
@@ -160,144 +158,122 @@ packages = [
 include = [
   "skills/**/*",
 ]
-
-[tool.poetry.dependencies]
-python = "^3.12,<3.14"
-authlib = ">=1.6.9"                                # CVE-2026-27962 (fixed in 1.6.9)
-orjson = ">=3.11.6"                                # Pinned to fix CVE-2025-67221
-litellm = "1.84.0rc1"                              # pinned to the requested LiteLLM incident-fix version
-openai = "2.33.0"                                  # Pin because litellm 1.84.0rc1 requires 2.33.0 (BerriAI/litellm#13711)
-aiohttp = "3.13.4"                                 # Pin because litellm 1.84.0rc1 requires 3.13.4
-google-genai = "*"                                 # To use litellm with Gemini Pro API
-google-api-python-client = "^2.164.0"              # For Google Sheets API
-google-auth-httplib2 = "*"                         # For Google Sheets authentication
-google-auth-oauthlib = "*"                         # For Google Sheets OAuth
-termcolor = "*"
-docker = "*"
-fastapi = "*"
-toml = "*"
-types-toml = "*"
-uvicorn = "*"
-numpy = "*"
-json-repair = "*"
-browsergym-core = "0.13.3"                         # integrate browsergym-core as the browsing interface
-playwright = "^1.55.0"
-html2text = "*"
-deprecated = "*"
-pexpect = "*"
-jinja2 = "^3.1.6"
-python-multipart = ">=0.0.22"
-tenacity = ">=8.5,<10.0"
-zope-interface = "7.2"
-pathspec = ">=0.12.1,<1.1.0"
-pyjwt = "^2.12.0"
-dirhash = "*"
-tornado = ">=6.5"
-python-dotenv = "*"
-rapidfuzz = "^3.9.0"
-whatthepatch = "^1.0.6"
-protobuf = ">=5.29.6,<6.0.0"                       # Updated to fix CVE-2026-0994
-opentelemetry-api = "^1.33.1"
-opentelemetry-exporter-otlp-proto-grpc = "^1.33.1"
-
-libtmux = ">=0.46.2"
-pygithub = "^2.5.0"
-joblib = "*"
-openhands-aci = "0.3.3"
-python-socketio = "5.14.0"
-sse-starlette = "^3.0.2"
-psutil = "*"
-python-json-logger = ">=3.2.1,<5.0.0"
-prompt-toolkit = "^3.0.50"
-poetry = "^2.3.3"
-anyio = "4.9.0"
-pythonnet = { version = "*", markers = "sys_platform == 'win32'" }
-fastmcp = ">=3.2,<4"
-python-frontmatter = "^1.1.0"
-shellingham = "^1.5.4"
+dependencies.python = "^3.12,<3.14"
+dependencies.authlib = ">=1.6.9" # CVE-2026-27962 (fixed in 1.6.9)
+dependencies.orjson = ">=3.11.6" # Pinned to fix CVE-2025-67221
+dependencies.litellm = "1.84.0rc1" # pinned to the requested LiteLLM incident-fix version
+dependencies.openai = "2.33.0" # Pin because litellm 1.84.0rc1 requires 2.33.0 (BerriAI/litellm#13711)
+dependencies.aiohttp = "3.13.4" # Pin because litellm 1.84.0rc1 requires 3.13.4
+dependencies.google-genai = "*" # To use litellm with Gemini Pro API
+dependencies.google-api-python-client = "^2.164.0" # For Google Sheets API
+dependencies.google-auth-httplib2 = "*" # For Google Sheets authentication
+dependencies.google-auth-oauthlib = "*" # For Google Sheets OAuth
+dependencies.termcolor = "*"
+dependencies.docker = "*"
+dependencies.fastapi = "*"
+dependencies.toml = "*"
+dependencies.types-toml = "*"
+dependencies.uvicorn = "*"
+dependencies.numpy = "*"
+dependencies.json-repair = "*"
+dependencies.browsergym-core = "0.13.3" # integrate browsergym-core as the browsing interface
+dependencies.playwright = "^1.55.0"
+dependencies.html2text = "*"
+dependencies.deprecated = "*"
+dependencies.pexpect = "*"
+dependencies.jinja2 = "^3.1.6"
+dependencies.python-multipart = ">=0.0.22"
+dependencies.tenacity = ">=8.5,<10.0"
+dependencies.zope-interface = "7.2"
+dependencies.pathspec = ">=0.12.1,<1.1.0"
+dependencies.pyjwt = "^2.12.0"
+dependencies.dirhash = "*"
+dependencies.tornado = ">=6.5"
+dependencies.python-dotenv = "*"
+dependencies.rapidfuzz = "^3.9.0"
+dependencies.whatthepatch = "^1.0.6"
+dependencies.protobuf = ">=5.29.6,<6.0.0" # Updated to fix CVE-2026-0994
+dependencies.opentelemetry-api = "^1.33.1"
+dependencies.opentelemetry-exporter-otlp-proto-grpc = "^1.33.1"
+dependencies.libtmux = ">=0.46.2"
+dependencies.pygithub = "^2.5.0"
+dependencies.joblib = "*"
+dependencies.openhands-aci = "0.3.3"
+dependencies.python-socketio = "5.14.0"
+dependencies.sse-starlette = "^3.0.2"
+dependencies.psutil = "*"
+dependencies.python-json-logger = ">=3.2.1,<5.0.0"
+dependencies.prompt-toolkit = "^3.0.50"
+dependencies.poetry = "^2.3.3"
+dependencies.anyio = "4.9.0"
+dependencies.pythonnet = { version = "*", markers = "sys_platform == 'win32'" }
+dependencies.fastmcp = ">=3.2,<4"
+dependencies.python-frontmatter = "^1.1.0"
+dependencies.shellingham = "^1.5.4"
 # TODO: Should these go into the runtime group?
-ipywidgets = "^8.1.5"
-qtconsole = "^5.6.1"
-python-pptx = "*"
-pylatexenc = "*"
-python-docx = "*"
-bashlex = "^0.18"
-
+dependencies.ipywidgets = "^8.1.5"
+dependencies.qtconsole = "^5.6.1"
+dependencies.python-pptx = "*"
+dependencies.pylatexenc = "*"
+dependencies.python-docx = "*"
+dependencies.bashlex = "^0.18"
 # Explicitly pinned packages for latest versions
-pypdf = "^6.9.2"
-pillow = "^12.1.1"
-starlette = ">=0.49.1,<1.1.0"
-urllib3 = "^2.6.3"
-requests = "^2.33.0"
-setuptools = ">=78.1.1"
-
+dependencies.pypdf = "^6.9.2"
+dependencies.pillow = "^12.1.1"
+dependencies.starlette = ">=0.49.1,<1.1.0"
+dependencies.urllib3 = "^2.6.3"
+dependencies.requests = "^2.33.0"
+dependencies.setuptools = ">=78.1.1"
 # TODO: These are integrations that should probably be optional
-redis = ">=5.2,<7.0"
-
-google-cloud-aiplatform = "*"
-anthropic = { extras = [ "vertex" ], version = "*" }
-boto3 = "*"
-kubernetes = ">=33.1,<36.0"
-pyyaml = "^6.0.2"
-memory-profiler = "^0.61.0"
-jupyter_kernel_gateway = "*"
-
+dependencies.redis = ">=5.2,<7.0"
+dependencies.google-cloud-aiplatform = "*"
+dependencies.anthropic = { extras = [ "vertex" ], version = "*" }
+dependencies.boto3 = "*"
+dependencies.kubernetes = ">=33.1,<36.0"
+dependencies.pyyaml = "^6.0.2"
+dependencies.memory-profiler = "^0.61.0"
+dependencies.jupyter_kernel_gateway = "*"
 # Third-party runtime dependencies (optional)
-modal = { version = ">=0.66.26,<1.2.0", optional = true }
-runloop-api-client = { version = "0.50.0", optional = true }
-daytona = { version = "0.24.2", optional = true }
-httpx-aiohttp = "^0.1.8"
-e2b-code-interpreter = { version = "^2.0.0", optional = true }
-pybase62 = "^1.0.0"
-
+dependencies.modal = { version = ">=0.66.26,<1.2.0", optional = true }
+dependencies.runloop-api-client = { version = "0.50.0", optional = true }
+dependencies.daytona = { version = "0.24.2", optional = true }
+dependencies.httpx-aiohttp = "^0.1.8"
+dependencies.e2b-code-interpreter = { version = "^2.0.0", optional = true }
+dependencies.pybase62 = "^1.0.0"
 # V1 dependencies
-openhands-sdk = "1.17.0"
-openhands-agent-server = "1.17.0"
-openhands-tools = "1.17.0"
-jwcrypto = ">=1.5.6"
-sqlalchemy = { extras = [ "asyncio" ], version = "^2.0.40" }
-pg8000 = "^1.31.5"
-asyncpg = ">=0.30,<0.32"
-deprecation = "^2.1.0"
-lmnr = "^0.7.20"
-
-[tool.poetry.extras]
-third_party_runtimes = [ "e2b-code-interpreter", "modal", "runloop-api-client", "daytona" ]
-
-[tool.poetry.group.dev]
-optional = true
-
-[tool.poetry.group.dev.dependencies]
-ruff = "0.12.5"
-mypy = "1.17.0"
-pre-commit = "4.2.0"
-build = "*"
-types-setuptools = "*"
-pytest = ">=8.4,<10.0"
-pytest-asyncio = "^1.3.0"
-
-[tool.poetry.group.test]
-optional = true
-
-[tool.poetry.group.test.dependencies]
-pytest = "*"
-pytest-cov = "*"
-pytest-asyncio = "*"
-pytest-forked = "*"
-pytest-xdist = "*"
-pytest-playwright = "^0.7.0"
-pytest-timeout = "^2.4.0"
-pandas = "*"
-reportlab = "*"
-gevent = ">=24.2.1,<26.0.0"
-
-[tool.poetry.group.runtime]
-optional = true
-
-[tool.poetry.group.runtime.dependencies]
-jupyterlab = "*"
-notebook = "*"
-flake8 = "*"
+dependencies.openhands-sdk = "1.17.0"
+dependencies.openhands-agent-server = "1.17.0"
+dependencies.openhands-tools = "1.17.0"
+dependencies.jwcrypto = ">=1.5.6"
+dependencies.sqlalchemy = { extras = [ "asyncio" ], version = "^2.0.40" }
+dependencies.pg8000 = "^1.31.5"
+dependencies.asyncpg = ">=0.30,<0.32"
+dependencies.deprecation = "^2.1.0"
+dependencies.lmnr = "^0.7.20"
+extras.third_party_runtimes = [ "e2b-code-interpreter", "modal", "runloop-api-client", "daytona" ]
+group.dev.optional = true
+group.dev.dependencies.ruff = "0.12.5"
+group.dev.dependencies.mypy = "1.17.0"
+group.dev.dependencies.pre-commit = "4.2.0"
+group.dev.dependencies.build = "*"
+group.dev.dependencies.types-setuptools = "*"
+group.dev.dependencies.pytest = ">=8.4,<10.0"
+group.dev.dependencies.pytest-asyncio = "^1.3.0"
+group.runtime.optional = true
+group.runtime.dependencies.jupyterlab = "*"
+group.runtime.dependencies.notebook = "*"
+group.runtime.dependencies.flake8 = "*"
+group.test.optional = true
+group.test.dependencies.pytest = "*"
+group.test.dependencies.pytest-cov = "*"
+group.test.dependencies.pytest-asyncio = "*"
+group.test.dependencies.pytest-forked = "*"
+group.test.dependencies.pytest-xdist = "*"
+group.test.dependencies.pytest-playwright = "^0.7.0"
+group.test.dependencies.pytest-timeout = "^2.4.0"
+group.test.dependencies.pandas = "*"
+group.test.dependencies.reportlab = "*"
+group.test.dependencies.gevent = ">=24.2.1,<26.0.0"
 
 [tool.poetry-dynamic-versioning]
 enable = true
@@ -317,7 +293,7 @@ lint.select = [ "D" ]
 lint.ignore = [ "D1" ]
 lint.pydocstyle.convention = "google"
 
-[tool.coverage.run]
-concurrency = [ "gevent" ]
-relative_files = true
-omit = [ "enterprise/tests/*", "**/test_*" ]
+[tool.coverage]
+run.concurrency = [ "gevent" ]
+run.omit = [ "**/test_*", "enterprise/tests/*" ]
+run.relative_files = true
