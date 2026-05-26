@@ -41,7 +41,7 @@ from tenacity import (
     wait_exponential,
 )
 
-from openhands.app_server.utils.logger import openhands_logger as logger
+from openhands.core.logger import openhands_logger as logger
 
 # Get configuration from environment variables
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
