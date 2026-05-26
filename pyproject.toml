@@ -49,7 +49,7 @@ dependencies = [
   "jwcrypto>=1.5.6",
   "kubernetes>=33.1",
   "libtmux>=0.46.2",
-  "litellm==1.84.0rc1",
+  "litellm==1.84.1",
   "lmnr>=0.7.20",
   "mcp>=1.25",
   "memory-profiler>=0.61",
@@ -161,9 +161,9 @@ include = [
 dependencies.python = "^3.12,<3.14"
 dependencies.authlib = ">=1.6.9" # CVE-2026-27962 (fixed in 1.6.9)
 dependencies.orjson = ">=3.11.6" # Pinned to fix CVE-2025-67221
-dependencies.litellm = "1.84.0rc1" # pinned to the requested LiteLLM incident-fix version
-dependencies.openai = "2.33.0" # Pin because litellm 1.84.0rc1 requires 2.33.0 (BerriAI/litellm#13711)
-dependencies.aiohttp = "3.13.4" # Pin because litellm 1.84.0rc1 requires 3.13.4
+dependencies.litellm = "1.84.1" # pinned to the requested LiteLLM incident-fix version
+dependencies.openai = "2.33.0" # Pin because litellm 1.84.1 requires 2.33.0 (BerriAI/litellm#13711)
+dependencies.aiohttp = "3.13.4" # Pin because litellm 1.84.1 requires 3.13.4
 dependencies.google-genai = "*" # To use litellm with Gemini Pro API
 dependencies.google-api-python-client = "^2.164.0" # For Google Sheets API
 dependencies.google-auth-httplib2 = "*" # For Google Sheets authentication
