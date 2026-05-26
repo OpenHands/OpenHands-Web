@@ -2,7 +2,7 @@ import io
 import re
 from itertools import chain
 from pathlib import Path
-from typing import ClassVar, Union
+from typing import Any, ClassVar, Union, cast
 
 import frontmatter
 from pydantic import BaseModel
@@ -95,7 +95,7 @@ class BaseMicroagent(BaseModel):
         content = loaded.content
 
         # Handle case where there's no frontmatter or empty frontmatter
-        metadata_dict = loaded.metadata or {}
+        metadata_dict = cast(dict[str, Any], loaded.metadata or {})
 
         # Ensure version is always a string (YAML may parse numeric versions as integers)
         if 'version' in metadata_dict and not isinstance(metadata_dict['version'], str):
